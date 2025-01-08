@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISHCOVER</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <img src="/static/dishcover.png" alt="Logo" class="mb-3" style="max-width: 200px;">
+        <h1 class="mb-4 text-white">DISHCOVER</h1>
+
+        <form id="recipeForm">
+            <div class="form-group">
+                <label for="textInput">Escribe un texto para la recomendación de recetas:</label>
+                <input type="text" id="textInput" name="text_input" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="imageInput">Sube una imagen para la recomendación de recetas:</label>
+                <input type="file" id="imageInput" name="image_input" class="form-control-file">
+            </div>
+
+            <div class="form-group">
+                <label for="preference">Selecciona tu preferencia alimenticia:</label>
+                <select id="preference" name="preference" class="form-control">
+                    <option value="Ninguno">Ninguno</option>
+                    <option value="Vegano">Vegano</option>
+                    <option value="Vegetariano">Vegetariano</option>
+                </select>
+            </div>
+
+            <button type="button" id="generateButton" class="btn btn-success">Generar Receta</button>
+        </form>
+
+        <div class="mt-4">
+            <h4>Recomendaciones:</h4>
+            <textarea id="recommendations" class="form-control" rows="5" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#generateButton').click(function () {
+                var formData = new FormData($('#recipeForm')[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: '/generar_receta',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $('#recommendations').val(response.recomendaciones);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
